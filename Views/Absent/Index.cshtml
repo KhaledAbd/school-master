@@ -1,0 +1,21 @@
+﻿@model IEnumerable<int>
+@{
+    ViewData["Title"] = "غيابُ كُلّ شهرٍ لهذا الفصل";
+}
+
+<div class="row2">
+
+    @foreach (var month in Model)
+     {
+
+        <a asp-action="Table" asp-controller="Absent" asp-route-month="@month" asp-route-year="2020" title="الشهر @month" tabindex="1">الشهر @month </a>
+     }
+
+</div>
+
+<!-- This is all CSS files for this page -->
+<link rel="stylesheet" href="~/css/sumOfAllFiles.css" />
+<link rel="stylesheet" href="~/css/styleClasses.css" />
+
+<!-- This is all JAVASCRIPT files for this page -->
+<script src="~/js/custom-classes.js"></script>
