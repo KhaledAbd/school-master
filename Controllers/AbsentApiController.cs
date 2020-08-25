@@ -47,6 +47,16 @@ namespace school.Controllers
                     }
                     else
                     {
+                        student.TimeAbsent = 0;
+                    }
+                    if(student.TimeAbsent >= 15 || student.TimeAbsentDaily >= 30)
+                    {
+                        student.NumOfReject++;
+                        if(student.NumOfReject > 3)
+                        {
+                            student.IsReject = true;
+                        }
+                        student.TimeAbsent = 0;
                         student.TimeAbsentDaily = 0;
                     }
                 }
@@ -63,6 +73,8 @@ namespace school.Controllers
             if (HttpContext.Session.GetInt32("Stage") != null){
                 if((Cls = HttpContext.Session.GetInt32("Class")) != null){
                     student.TimeAbsent = 0;
+                    student.NumOfReject = 0;
+                    student.IsReject = false;
                 }
             }
             await context.AddAsync(student);
@@ -75,6 +87,14 @@ namespace school.Controllers
         public async Task<IActionResult> GetAbsent()
         {
             return Ok(await context.Absent.ToListAsync());
+        }
+
+        [HttpGet]
+        [Route("year/{year}")]
+        public async Task<IActionResult> GetMonth(int year)
+        {
+            
+            return Ok(new { months = await context.Absent.Where(a => a.DateAbsent.Year == year).Select(a => a.DateAbsent.Month).Distinct().ToListAsync() });
         }
     }
 }

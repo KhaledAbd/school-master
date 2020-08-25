@@ -16,6 +16,14 @@ function setClass(classId, className) {
 
 }
 
+function goToAbsentTable(el) {
+    var year = $('#yearSelect').val();
+    var month = $(el).parent().next()[0].innerHTML;
+    //var month = $(el).parentNode.cells[1].innerHTML;
+
+    location.replace('/Absent/Table?year=' + year + '&month=' + month);
+}
+
 function sendClass(e) {
 
     var button = $(e);
@@ -60,25 +68,6 @@ function changeName(e) {
 
 }
 
-/*var tr;
-function setAbsent(element, event) {
-
-    var char = event.witch || event.keyCode;
-
-    if (char == 13) {
-
-        tr = $(element).parent();
-
-        console.log(tr);
-
-        tr.cells[1].child().val(1);
-
-    }
-
-}*/
-
-//Start
-
 function setAbsent(el, ev) {
 
     var tr = $(el).parent();
@@ -112,6 +101,34 @@ $(document).ready(function () {
 
     $('.table tbody').on('click', '.myDeleteButton', function () {
         $(this).closest('tr').remove();
+    });
+
+    $('#yearSelect').change(function () {
+        var lastrow = $('#myTable tr:last');
+        ///var lastrow = $('#myTable tr:not(:first)');
+        $.ajax({
+            method: 'GET',
+            url: '/api/absent/year/' + $('#yearSelect').val(),
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.months) {
+                    $('#myTable tr:not(:first, :last)').remove();
+                    for (let month in data.months) {
+                        var newClone = lastrow.clone();
+                        newClone[0].cells[1].innerHTML = data.months[month];
+                        newClone[0].hidden = false;
+                        lastrow.before(newClone);
+                        //console.log('sdad');
+                    }
+                } else {
+                    alertify.error('هناك مُشكلةٌ ! عاودْ تَشغيل البرنامج من فَضْلِكَ !');
+                }
+
+                        },
+                error: function (error) {
+                    console.log(error);
+                }
+        });
     });
 
     $('#addAbsent').click(function () {
@@ -357,25 +374,23 @@ $(document).ready(function () {
                 console.log(error);
             }
 
-        })
-
+        });
     });
 
-    $("#myInputForSearching").on("keyup", function () {
+        $("#myInputForSearching").on("keyup", function () {
 
-        var value = $(this).val();
+            var value = $(this).val();
 
-        $("#myTable tr").filter(function (index) {
+            $("#myTable tr").filter(function (index) {
 
-            if (index != 0) {
-                $(this).toggle($(this).children("td").text().indexOf(value) > -1)
-            }
+                if (index != 0) {
+                    $(this).toggle($(this).children("td").text().indexOf(value) > -1)
+                }
+
+            });
 
         });
-
     });
-
-});
 
 $(document).keypress(function (e) {
 

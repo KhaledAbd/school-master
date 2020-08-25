@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,8 +18,11 @@ namespace school.Controllers
         {
             this.context = context;
         }
-        public async Task<IActionResult> Index() => View(await context.Absent.Select(a => a.DateAbsent.Month ).Distinct().ToListAsync());
-        
+        public async Task<IActionResult> Index() {
+            ViewData["month"] = await context.Absent.Where(a => a.DateAbsent.Year == DateTime.Now.Year).Select(a => a.DateAbsent.Month).Distinct().ToListAsync();
+            ViewData["year"] = await context.Absent.Select(a => a.DateAbsent.Year).Distinct().ToListAsync();
+            return View();
+        }
 
         public async Task<IActionResult> Table(int month, int year)
         {

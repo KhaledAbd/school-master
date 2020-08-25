@@ -340,7 +340,7 @@ input[type=checkbox]:focus {
 }
 
 @media (min-width: 500px) and (max-width: 575px) {
-    :: -webkit-input-placeholder {
+    ::-webkit-input-placeholder {
         /* Edge */
         font-size: 13.5px;
     }

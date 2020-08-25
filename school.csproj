@@ -19,7 +19,6 @@
     <None Include="wwwroot\js\bootstrap.min.js" />
     <None Include="wwwroot\js\bootstrap.min.js.map" />
     <None Include="wwwroot\js\custom-addClass.js" />
-    <None Include="wwwroot\js\custom-classes.js" />
     <None Include="wwwroot\js\custom-hello.js" />
     <None Include="wwwroot\js\custom-index.js" />
     <None Include="wwwroot\js\custom-stages.js" />

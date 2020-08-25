@@ -32,17 +32,17 @@ namespace school.dtos
         public void  MatrixSet(IEnumerable<Student> students, SchoolContext context)
         {
             int count = students.Count();
+            int i = 0;
             absentMat = new bool?[count, NumOfDay];
             Students = new string[count];
             foreach (Student student in students)
             {
-                int i = student.StudentId % count;
                 Students[i] = student.StudentName;
-                foreach (var absent in context.Absent.Where(a=>a.StudentId == student.StudentId && a.DateAbsent.Month == month)) { 
+                foreach (var absent in context.Absent.Where(a=>a.StudentId == student.StudentId && a.DateAbsent.Month == month && a.DateAbsent.Year == year)) { 
                             int j = absent.DateAbsent.Day - 1;
                             absentMat[ i, j] = absent.AbsentCheck;
                 }
-         
+                i++;
             }
         }
         public string[] Students { get; set;}
